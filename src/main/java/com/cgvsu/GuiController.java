@@ -6,6 +6,7 @@ import com.cgvsu.model.Model;
 import com.cgvsu.model.Polygon;
 import com.cgvsu.objreader.ObjReader;
 import com.cgvsu.objwriter.ObjWriter;
+import com.cgvsu.objwriter.ObjWriterExceptions;
 import com.cgvsu.render_engine.Camera;
 import com.cgvsu.render_engine.RenderEngine;
 import com.cgvsu.triangulation.Triangle;
@@ -290,6 +291,8 @@ public class GuiController {
             }
         } catch (NullPointerException e) {
             new DialogException("Select model before saving!");
+        } catch (ObjWriterExceptions e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -311,12 +314,12 @@ public class GuiController {
             }
             writer.flush();
             writer.close();
-        } catch (IOException ex) {
+        } catch (IOException | ObjWriterExceptions ex) {
             new DialogException("Error with saving model!");
         }
     }
 
-    private void saveChangedModelMenuItemClick() {
+    private void saveChangedModelMenuItemClick() throws ObjWriterExceptions {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
         fileChooser.setTitle("Save Changed Model");

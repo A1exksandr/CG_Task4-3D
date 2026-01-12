@@ -14,7 +14,7 @@ public class ObjWriter {
     private static final String OBJ_NORMAL_TOKEN = "vn";
     private static final String OBJ_FACE_TOKEN = "f";
 
-    public static ArrayList<String> write(Model mesh) {
+    public static ArrayList<String> write(Model mesh) throws ObjWriterExceptions {
         ArrayList<String> listFileContent = new ArrayList<>();
 
         writeVertices(mesh.getVertices(), listFileContent);
@@ -53,13 +53,13 @@ public class ObjWriter {
         }
     }
 
-    protected static void writePolygons(final List<Polygon> polygons, ArrayList<String> outListFileContent) {
+    protected static void writePolygons(final List<Polygon> polygons, ArrayList<String> outListFileContent) throws ObjWriterExceptions {
         for (Polygon polygon : polygons) {
             writeOnePolygon(polygon, outListFileContent);
         }
     }
 
-    protected static void writeOnePolygon(final Polygon polygon, List<String> outListFileContent) {
+    protected static void writeOnePolygon(final Polygon polygon, List<String> outListFileContent) throws ObjWriterExceptions {
 
         // f 1/2/3 v/vt/vn
 
