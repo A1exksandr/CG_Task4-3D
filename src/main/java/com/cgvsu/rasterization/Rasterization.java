@@ -1,6 +1,5 @@
 package com.cgvsu.rasterization;
 
-
 import com.cgvsu.GuiController;
 import com.cgvsu.math.Utils;
 import com.cgvsu.model.ChangedModel;
