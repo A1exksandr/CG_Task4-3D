@@ -10,6 +10,7 @@ public interface MatrixUtils {
         for (int i = 0; i < floats.length; i++) {
             floats1[i] = floats[i];
         }
+
         return floats1;
     }
 
