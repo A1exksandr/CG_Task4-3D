@@ -94,18 +94,14 @@ public class ObjWriter {
 
         try {
             for (int i = 0; i < vertexCount; i++) {
-                // Всегда добавляем индекс вершины (+1 в OBJ формате)
                 strPolygon.append(polygon.getVertexIndices().get(i) + 1);
 
-                // Добавляем текстуру если есть
                 if (textureCount > 0 && i < textureCount) {
                     strPolygon.append("/").append(polygon.getTextureVertexIndices().get(i) + 1);
                 } else if (normalCount > 0) {
-                    // Если есть нормали, но нет текстур, нужно добавить двойной слэш
                     strPolygon.append("/");
                 }
 
-                // Добавляем нормаль если есть
                 if (normalCount > 0 && i < normalCount) {
                     strPolygon.append("/").append(polygon.getNormalIndices().get(i) + 1);
                 }

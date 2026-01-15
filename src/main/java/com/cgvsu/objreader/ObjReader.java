@@ -25,6 +25,7 @@ public class ObjReader {
         Model resultModel = new Model();
         int lineInd = 0;
         Scanner scanner = new Scanner(fileContent);
+
         if (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.startsWith("\ufeff")) {
