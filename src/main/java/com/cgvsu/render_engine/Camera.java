@@ -17,12 +17,14 @@ public class Camera {
     SimpleBooleanProperty isChanged;
 
     public Camera(
+
             final Vector3f position,
             final Vector3f target,
             final float fov,
             final float aspectRatio,
             final float nearPlane,
             final float farPlane) {
+
         this.position = position;
         this.positionLight = new Vector3f(position);
         this.target = target;
