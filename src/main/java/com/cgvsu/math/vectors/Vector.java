@@ -46,7 +46,7 @@ public class Vector<T extends Number> extends Matrix<T> {
         return new Vector<T>(values);
     }
 
-    public static<T extends Number> Vector<T> divideByScalar(Vector<T> vec, double s) {
+    public static<T extends Number> Vector<T> divideByScalar(Vector<T> vec, double s) throws VectorException {
         if (Double.compare(s,0) == 0){
             throw new VectorException("zero division error");
         }
@@ -73,7 +73,7 @@ public class Vector<T extends Number> extends Matrix<T> {
             System.out.print(i + " ");
         }
     }
-    public T dot(Vector<T> vec){
+    public T dot(Vector<T> vec) throws VectorException {
         return dot(this,vec);
     }
     public void normalize(){

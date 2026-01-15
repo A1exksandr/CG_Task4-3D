@@ -28,7 +28,6 @@ public class Matrix<T extends Number> {
         this(Arrays.asList(values), rows, cols);
     }
 
-    //https://www.youtube.com/live/9yt4SiA7OiU?feature=share&t=5321
     public Matrix(int rows, int cols, T value) {
         this.rows = rows;
         this.cols = cols;
@@ -57,24 +56,24 @@ public class Matrix<T extends Number> {
     }
 
 
-    public static <T extends Number> Matrix transposition(Matrix<T> matrix) {
-        List<T> matrix1F = matrix.getMatrix();
-        List<T> newMatrix = new float[matrix.getCols()];
-        for (int row = 0; row < matrix.getRows(); row++) {
-            for (int col = 0; col < matrix.getCols(); col++) {
-                setElement(newMatrix, matrix.getCols(), row, col, matrix.getElement(col, row));
-            }
-        }
-        return new Matrix(matrix.getMatrix(), matrix.getRows(), matrix.getCols());
-    }
-
-    public static Matrix<? extends Number> createIdentityMatrix(int rows, int cols) {
-        float[] newMatrix = new float[rows * cols];
-        for (int i = 0; i < cols; i++) {
-            newMatrix[cols * i + i] = 1;
-        }
-        return new Matrix<Number>(newMatrix, rows, cols);
-    }
+//    public static <T extends Number> Matrix transposition(Matrix<T> matrix) {
+//        List<T> matrix1F = matrix.getMatrix();
+//        List<T> newMatrix = new float[matrix.getCols()];
+//        for (int row = 0; row < matrix.getRows(); row++) {
+//            for (int col = 0; col < matrix.getCols(); col++) {
+//                setElement(newMatrix, matrix.getCols(), row, col, matrix.getElement(col, row));
+//            }
+//        }
+//        return new Matrix(matrix.getMatrix(), matrix.getRows(), matrix.getCols());
+//    }
+//
+//    public static Matrix<? extends Number> createIdentityMatrix(int rows, int cols) {
+//        float[] newMatrix = new float[rows * cols];
+//        for (int i = 0; i < cols; i++) {
+//            newMatrix[cols * i + i] = 1;
+//        }
+//        return new Matrix<Number>(newMatrix, rows, cols);
+//    }
 
 
 
