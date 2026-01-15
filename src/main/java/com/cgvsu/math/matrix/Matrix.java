@@ -28,7 +28,6 @@ public class Matrix<T extends Number> {
         this(Arrays.asList(values), rows, cols);
     }
 
-    //https://www.youtube.com/live/9yt4SiA7OiU?feature=share&t=5321
     public Matrix(int rows, int cols, T value) {
         this.rows = rows;
         this.cols = cols;

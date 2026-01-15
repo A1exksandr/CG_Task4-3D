@@ -17,83 +17,106 @@ public class ObjWriter {
     public static ArrayList<String> write(Model mesh) throws ObjWriterExceptions {
         ArrayList<String> listFileContent = new ArrayList<>();
 
+        if (mesh == null) {
+            return listFileContent;
+        }
+
         writeVertices(mesh.getVertices(), listFileContent);
-        listFileContent.add("# " + mesh.getVertices().size() + " vertices");
+        if (!mesh.getVertices().isEmpty()) {
+            listFileContent.add("# " + mesh.getVertices().size() + " vertices");
+        }
 
         writeTextureVertices(mesh.getTextureVertices(), listFileContent);
-        listFileContent.add("# " + mesh.getTextureVertices().size() + " texture coordinates");
+        if (!mesh.getTextureVertices().isEmpty()) {
+            listFileContent.add("# " + mesh.getTextureVertices().size() + " texture coordinates");
+        }
 
         writeNormals(mesh.getNormals(), listFileContent);
-        listFileContent.add("# " + mesh.getNormals().size() + " vertices");
+        if (!mesh.getNormals().isEmpty()) {
+            listFileContent.add("# " + mesh.getNormals().size() + " normals");
+        }
 
         writePolygons(mesh.getPolygons(), listFileContent);
-        listFileContent.add("# " + mesh.getPolygons().size() + " polygons");
+        if (!mesh.getPolygons().isEmpty()) {
+            listFileContent.add("# " + mesh.getPolygons().size() + " polygons");
+        }
+
         return listFileContent;
     }
 
-    protected static void writeVertices(final List<Vector3f> vertices, ArrayList<String> outListFileContent) { //try? exception?
-        for (Vector3f vertex : vertices) {
-            outListFileContent.add(OBJ_VERTEX_TOKEN + " " + vertex.x
-                    + " " + vertex.y + " " + vertex.z);
-        }
+    protected static void writeVertices(final List<Vector3f> vertices, ArrayList<String> outListFileContent) {
+        if (vertices == null) return;
 
+        for (Vector3f vertex : vertices) {
+            // Форматируем с точностью до 6 знаков после запятой
+            outListFileContent.add(String.format("%s %.6f %.6f %.6f",
+                    OBJ_VERTEX_TOKEN, vertex.x, vertex.y, vertex.z));
+        }
     }
 
     protected static void writeTextureVertices(final List<Vector2f> textureVertices, ArrayList<String> outListFileContent) {
+        if (textureVertices == null) return;
+
         for (Vector2f textureVertex : textureVertices) {
-            outListFileContent.add(OBJ_TEXTURE_TOKEN + " " + textureVertex.x
-                    + " " + textureVertex.y);
+            outListFileContent.add(String.format("%s %.6f %.6f",
+                    OBJ_TEXTURE_TOKEN, textureVertex.x, textureVertex.y));
         }
     }
 
     protected static void writeNormals(final List<Vector3f> normals, ArrayList<String> outListFileContent) {
+        if (normals == null) return;
+
         for (Vector3f normal : normals) {
-            outListFileContent.add(OBJ_NORMAL_TOKEN + " " + normal.x
-                    + " " + normal.y + " " + normal.z);
+            outListFileContent.add(String.format("%s %.6f %.6f %.6f",
+                    OBJ_NORMAL_TOKEN, normal.x, normal.y, normal.z));
         }
     }
 
     protected static void writePolygons(final List<Polygon> polygons, ArrayList<String> outListFileContent) throws ObjWriterExceptions {
+        if (polygons == null) return;
+
         for (Polygon polygon : polygons) {
             writeOnePolygon(polygon, outListFileContent);
         }
     }
 
     protected static void writeOnePolygon(final Polygon polygon, List<String> outListFileContent) throws ObjWriterExceptions {
-
-        // f 1/2/3 v/vt/vn
+        if (polygon == null || polygon.getVertexIndices().isEmpty()) {
+            return;
+        }
 
         StringBuilder strPolygon = new StringBuilder();
-        strPolygon.append(OBJ_FACE_TOKEN + " ");
+        strPolygon.append(OBJ_FACE_TOKEN).append(" ");
+
+        int vertexCount = polygon.getVertexIndices().size();
+        int textureCount = polygon.getTextureVertexIndices().size();
+        int normalCount = polygon.getNormalIndices().size();
 
         try {
-            if (polygon.getSizePolygonsTextureVertexIndices() == 0 &&
-                    polygon.getSizePolygonsNormalIndices() == 0) {
-                for (int j = 0; j < polygon.getSizePolygonsVertexIndices(); j++) {
-                    strPolygon.append(polygon.getVertexIndices().get(j) + 1).append(" ");
+            for (int i = 0; i < vertexCount; i++) {
+                // Всегда добавляем индекс вершины (+1 в OBJ формате)
+                strPolygon.append(polygon.getVertexIndices().get(i) + 1);
+
+                // Добавляем текстуру если есть
+                if (textureCount > 0 && i < textureCount) {
+                    strPolygon.append("/").append(polygon.getTextureVertexIndices().get(i) + 1);
+                } else if (normalCount > 0) {
+                    // Если есть нормали, но нет текстур, нужно добавить двойной слэш
+                    strPolygon.append("/");
                 }
-            } else if (polygon.getSizePolygonsTextureVertexIndices() != 0 &&
-                    polygon.getSizePolygonsNormalIndices() == 0) {
-                for (int j = 0; j < polygon.getSizePolygonsTextureVertexIndices(); j++) {
-                    strPolygon.append(polygon.getVertexIndices().get(j) + 1).append("/").
-                            append(polygon.getTextureVertexIndices().get(j) + 1).append(" ");
+
+                // Добавляем нормаль если есть
+                if (normalCount > 0 && i < normalCount) {
+                    strPolygon.append("/").append(polygon.getNormalIndices().get(i) + 1);
                 }
-            } else if (polygon.getSizePolygonsTextureVertexIndices() == 0 &&
-                    polygon.getSizePolygonsNormalIndices() != 0) {
-                for (int j = 0; j < polygon.getSizePolygonsNormalIndices(); j++) {
-                    strPolygon.append(polygon.getVertexIndices().get(j) + 1).append("//").
-                            append(polygon.getNormalIndices().get(j) + 1).append(" ");
-                }
-            } else {
-                for (int j = 0; j < polygon.getSizePolygonsTextureVertexIndices(); j++) {
-                    strPolygon.append(polygon.getVertexIndices().get(j) + 1).append("/").append(
-                            polygon.getTextureVertexIndices().get(j) + 1).append("/").append(
-                            polygon.getNormalIndices().get(j) + 1).append(" ");
-                }
+
+                strPolygon.append(" ");
             }
         } catch (IndexOutOfBoundsException e) {
-            throw new ObjWriterExceptions("Too few vertex arguments");
+            throw new ObjWriterExceptions("Mismatch in polygon indices count. Vertices: " +
+                    vertexCount + ", Textures: " + textureCount + ", Normals: " + normalCount);
         }
-        outListFileContent.add(String.valueOf(strPolygon));
+
+        outListFileContent.add(strPolygon.toString().trim());
     }
 }

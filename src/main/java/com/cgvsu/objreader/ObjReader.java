@@ -128,35 +128,40 @@ public class ObjReader {
             final List<Integer> onePolygonTextureVertexIndices,
             final List<Integer> onePolygonNormalIndices,
             final int lineInd) {
+
+        String[] vertexData = wordInLine.split("/", -1);
+
         try {
-            String[] someVertexDescriptionInString = wordInLine.split("/");
-            Integer[] someVertexDescription = new Integer[someVertexDescriptionInString.length];
-            for (int i = 0; i < someVertexDescriptionInString.length; i++) {
-                someVertexDescription[i] = Integer.parseInt(someVertexDescriptionInString[i]);
-                if (someVertexDescription[i] < 1) {
-                    throw new ObjReaderExceptions.ObjReaderException("Some vector reference cannot be negative.", lineInd);
+            // Вершина обязательна
+            if (vertexData.length > 0 && !vertexData[0].isEmpty()) {
+                int vertexIndex = Integer.parseInt(vertexData[0]);
+                if (vertexIndex < 1) {
+                    throw new ObjReaderExceptions.ObjReaderException("Vertex index must be positive", lineInd);
                 }
+                onePolygonVertexIndices.add(vertexIndex - 1);
+            } else {
+                throw new ObjReaderExceptions.ObjReaderException("Missing vertex index", lineInd);
             }
-            switch (someVertexDescription.length) {
-                case 1 -> {
-                    onePolygonVertexIndices.add(someVertexDescription[0] - 1);
+
+            // Текстурная координата
+            if (vertexData.length > 1 && !vertexData[1].isEmpty()) {
+                int textureIndex = Integer.parseInt(vertexData[1]);
+                if (textureIndex < 1) {
+                    throw new ObjReaderExceptions.ObjReaderException("Texture index must be positive", lineInd);
                 }
-                case 2 -> {
-                    onePolygonVertexIndices.add(someVertexDescription[0] - 1);
-                    onePolygonTextureVertexIndices.add(someVertexDescription[1] - 1);
-                }
-                // case -> { }
-                case 3 -> {
-                    onePolygonVertexIndices.add(someVertexDescription[0] - 1);
-                    if (!someVertexDescriptionInString[1].equals("")) {
-                        onePolygonTextureVertexIndices.add(someVertexDescription[1] - 1);
-                    }
-                    onePolygonNormalIndices.add(someVertexDescription[2] - 1);
-                }
-                default -> throw new ObjReaderExceptions.ObjReaderException("Invalid element size.", lineInd);
+                onePolygonTextureVertexIndices.add(textureIndex - 1);
             }
+
+            if (vertexData.length > 2 && !vertexData[2].isEmpty()) {
+                int normalIndex = Integer.parseInt(vertexData[2]);
+                if (normalIndex < 1) {
+                    throw new ObjReaderExceptions.ObjReaderException("Normal index must be positive", lineInd);
+                }
+                onePolygonNormalIndices.add(normalIndex - 1);
+            }
+
         } catch (NumberFormatException e) {
-            throw new ObjReaderExceptions.ObjReaderException("Failed to parse int value.", lineInd);
+            throw new ObjReaderExceptions.ObjReaderException("Failed to parse int value: " + wordInLine, lineInd);
         }
     }
 }

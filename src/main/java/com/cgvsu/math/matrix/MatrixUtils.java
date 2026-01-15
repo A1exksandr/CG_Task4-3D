@@ -117,38 +117,46 @@ public interface MatrixUtils {
     }
 
     public static <T extends Number> Matrix<T> transposition(Matrix<T> matrix) {
-        //todo check matrix
-        List<T> matrix1 = matrix.getValues();
-        List<T> newMatrix = new ArrayList<>();
-        //getCols
-        float tmp;
-        int rows = matrix.getRows();
-        int cols = matrix.getCols();
+        if (matrix == null) {
+            throw new MatrixException("Matrix is null");
+        }
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                //if matrix doesn't have value there. It's related only to vectors like:
-                // v1 = (1,1,1); after transpose it must be:
-                //      (1)
-                //v1 =  (1)
-                //      (1)
-                if (matrix.getCols() * col + row >= matrix.values.size()) {
+        List<T> source = matrix.getValues();
+        int srcRows = matrix.getRows();
+        int srcCols = matrix.getCols();
 
-                    if (rows == 1) {
-                        rows = cols;
-                        cols = 1;
-                        setElement(newMatrix, cols, col, row, matrix.getElement(row, col));
-                    }
-                    continue;
-                }
-                setElement(newMatrix, cols, row, col, matrix.getElement(col, row));
+        // Для транспонирования меняем размеры местами
+        int dstRows = srcCols;  // Высота = старая ширина
+        int dstCols = srcRows;  // Ширина = старая высота
+
+        List<T> destination = new ArrayList<>(dstRows * dstCols);
+
+        // Инициализируем список (setElement требует существующих индексов)
+        for (int i = 0; i < dstRows * dstCols; i++) {
+            destination.add(null);
+        }
+
+        // Простое транспонирование: элемент [i][j] -> элемент [j][i]
+        for (int row = 0; row < srcRows; row++) {
+            for (int col = 0; col < srcCols; col++) {
+                T value = matrix.getElement(row, col);
+                setElement(destination, dstCols, col, row, value); // Индексы меняются местами!
             }
         }
-        return new Matrix<>(newMatrix, rows, cols);
+
+        return new Matrix<>(destination, dstRows, dstCols);
     }
 
     static <T extends Number> void setElement(List<T> values, int width, int row, int col, T value) {
-        //todo exception if size < width * row + col
-        values.set(width * row + col, value);
+        int index = width * row + col;
+
+        if (index < 0 || index >= values.size()) {
+            // Расширяем список если нужно
+            while (values.size() <= index) {
+                values.add(null);
+            }
+        }
+
+        values.set(index, value);
     }
 }

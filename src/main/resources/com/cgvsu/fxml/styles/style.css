@@ -1,212 +1,238 @@
+/* ===== Cosmic Blue Theme ===== */
 .root {
-    -fx-accent: #1e74c6;
+    -fx-background-color: #0a0e1a;
+    -fx-accent: #00b4d8;
     -fx-focus-color: -fx-accent;
-    -fx-base: #373e43;
-    -fx-control-inner-background: derive(-fx-base, 35%);
-    -fx-control-inner-background-alt: -fx-control-inner-background;
+    -fx-base: #1a1f38;
+    -fx-control-inner-background: #1e243f;
+    -fx-control-inner-background-alt: #252b4a;
 }
 
+/* ===== Текст ===== */
 .label {
-    -fx-text-fill: lightgray;
+    -fx-text-fill: #e2f3fd;
+    -fx-font-family: 'Segoe UI', sans-serif;
 }
 
-.text-field {
-    -fx-prompt-text-fill: gray;
-}
-
-.titulo {
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-}
-
-.button {
-    -fx-focus-traversable: false;
+.text-field, .text-area {
+    -fx-background-color: #252b4a;
+    -fx-border-color: #3a4160;
+    -fx-border-radius: 4px;
     -fx-background-radius: 4px;
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 20%), derive(-fx-base, -10%));
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0, 0, 1);
+    -fx-text-fill: #e2f3fd;
+    -fx-prompt-text-fill: #6c7392;
+    -fx-font-family: 'Consolas', monospace;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #00b4d8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 180, 216, 0.4), 10, 0, 0, 0);
+}
+
+/* ===== Кнопки ===== */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #1a5fb4, #0d4a9c);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+    -fx-border-color: transparent;
 }
 
 .button:hover {
-    -fx-text-fill: white;
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-accent, 20%), derive(-fx-accent, -10%));
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 4, 0, 0, 1);
-    -fx-cursor: hand;
+    -fx-background-color: linear-gradient(to bottom, #00b4d8, #0096c7);
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 180, 216, 0.5), 10, 0, 0, 3);
 }
 
 .button:pressed {
-    -fx-background-color: derive(-fx-accent, -20%);
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.5), 4, 0, 0, 1);
+    -fx-background-color: #0077b6;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 1);
 }
 
-.separator *.line {
-    -fx-background-color: #3C3C3C;
-    -fx-border-style: solid;
-    -fx-border-width: 1px;
+.button:disabled {
+    -fx-background-color: #2d3448;
+    -fx-text-fill: #6c7392;
+    -fx-effect: none;
 }
 
-.scroll-bar {
-    -fx-background-color: derive(-fx-base, 45%);
+/* ===== Меню и панели ===== */
+.menu-bar {
+    -fx-background-color: #151a30;
+    -fx-border-color: #2a3048;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.menu-bar .menu {
+    -fx-text-fill: #c1d8e9;
+}
+
+.menu-bar .menu:hover, .menu-bar .menu:showing {
+    -fx-background-color: #252b4a;
+}
+
+.menu-item {
+    -fx-background-color: #1e243f;
+    -fx-text-fill: #e2f3fd;
+}
+
+.menu-item:hover, .menu-item:focused {
+    -fx-background-color: #00b4d8;
+    -fx-text-fill: #0a0e1a;
+}
+
+/* ===== Списки и таблицы ===== */
+.list-view, .table-view {
+    -fx-background-color: #1a1f38;
+    -fx-border-color: #3a4160;
+    -fx-border-radius: 4px;
     -fx-background-radius: 4px;
 }
 
+.list-cell, .table-row-cell {
+    -fx-background-color: #1e243f;
+    -fx-text-fill: #e2f3fd;
+    -fx-border-color: transparent;
+}
+
+.list-cell:filled:hover, .table-row-cell:filled:hover {
+    -fx-background-color: #252b4a;
+}
+
+.list-cell:filled:selected, .table-row-cell:filled:selected {
+    -fx-background-color: #00b4d8;
+    -fx-text-fill: #0a0e1a;
+}
+
+/* ===== Ползунки (Slider) ===== */
+.slider .track {
+    -fx-background-color: #2d3448;
+    -fx-background-radius: 2px;
+}
+
+.slider .thumb {
+    -fx-background-color: #00b4d8;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 180, 216, 0.6), 5, 0, 0, 1);
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #48cae4;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* ===== CheckBox & RadioButton ===== */
+.check-box, .radio-button {
+    -fx-text-fill: #e2f3fd;
+}
+
+.check-box .box, .radio-button .radio {
+    -fx-background-color: #252b4a;
+    -fx-border-color: #3a4160;
+    -fx-border-radius: 3px;
+}
+
+.check-box:selected .mark, .radio-button:selected .dot {
+    -fx-background-color: #00b4d8;
+}
+
+.check-box:hover .box, .radio-button:hover .radio {
+    -fx-border-color: #00b4d8;
+}
+
+/* ===== Canvas и область отрисовки ===== */
+.canvas {
+    -fx-background-color: #0a0e1a;
+    -fx-border-color: #2a3048;
+    -fx-border-width: 1px;
+}
+
+.anchor-pane {
+    -fx-background-color: #0a0e1a;
+}
+
+/* ===== ScrollBar ===== */
+.scroll-bar {
+    -fx-background-color: #151a30;
+}
+
 .scroll-bar .thumb {
-    -fx-background-color: derive(-fx-base, 60%);
+    -fx-background-color: #3a4160;
     -fx-background-radius: 4px;
 }
 
 .scroll-bar .thumb:hover {
-    -fx-background-color: derive(-fx-accent, 20%);
+    -fx-background-color: #00b4d8;
 }
 
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 4px;
 }
 
-.button:default {
-    -fx-base: -fx-accent;
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-accent, 20%), derive(-fx-accent, -10%));
-}
-
-.button:default:hover {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-accent, 40%), derive(-fx-accent, 10%));
-}
-
-.table-view {
-    -fx-selection-bar-non-focused: derive(-fx-base, 50%);
-    -fx-background-radius: 4px;
-    -fx-border-radius: 4px;
-    -fx-border-color: derive(-fx-base, 20%);
-    -fx-border-width: 1px;
-}
-
-.table-view .column-header {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 10%), derive(-fx-base, -10%));
-    -fx-border-color: derive(-fx-base, 20%);
-    -fx-border-width: 0 0 1px 0;
-    -fx-padding: 8px;
-}
-
-.table-view .column-header .label {
-    -fx-alignment: CENTER_LEFT;
-    -fx-font-weight: none;
-    -fx-text-fill: lightgray;
-}
-
-.table-view .column-header:hover {
-    -fx-background-color: derive(-fx-base, 15%);
-}
-
-.table-view .table-cell {
-    -fx-padding: 8px;
-    -fx-border-color: transparent derive(-fx-base, 10%) transparent transparent;
-}
-
-.table-view .table-row-cell {
-    -fx-background-color: transparent;
-}
-
-.table-view .table-row-cell:hover {
-    -fx-background-color: derive(-fx-base, 10%);
-}
-
-.table-view .table-row-cell:selected {
-    -fx-background-color: derive(-fx-accent, 40%);
-    -fx-background-insets: 0;
-}
-
-.table-view .table-row-cell:selected .table-cell {
-    -fx-text-fill: white;
-}
-
-.list-cell:even,
-.list-cell:odd,
-.table-row-cell:even,
-.table-row-cell:odd {
-    -fx-control-inner-background: derive(-fx-base, 15%);
-}
-
-.list-cell:empty,
-.table-row-cell:empty {
-    -fx-background-color: transparent;
-}
-
-.list-cell,
-.table-row-cell {
-    -fx-border-color: transparent;
-    -fx-table-cell-border-color: transparent;
-}
-
-.list-view {
-    -fx-background-radius: 4px;
-    -fx-border-radius: 4px;
-    -fx-border-color: derive(-fx-base, 20%);
-    -fx-border-width: 1px;
-}
-
-.list-cell {
-    -fx-padding: 8px;
-    -fx-border-color: transparent transparent derive(-fx-base, 10%) transparent;
-}
-
-.list-cell:hover {
-    -fx-background-color: derive(-fx-base, 10%);
-}
-
-.list-cell:selected {
-    -fx-background-color: derive(-fx-accent, 40%);
-    -fx-text-fill: white;
-}
-
-/* Дополнительные улучшения для визуальной иерархии */
-.menu-bar {
-    -fx-background-color: derive(-fx-base, 10%);
-    -fx-border-color: derive(-fx-base, 20%);
+/* ===== Разделители ===== */
+.separator *.line {
+    -fx-border-color: #2a3048;
     -fx-border-width: 0 0 1px 0;
 }
 
-.menu:hover, .menu:showing {
-    -fx-background-color: derive(-fx-base, 20%);
-}
-
-.menu-item:hover, .menu-item:focused {
-    -fx-background-color: derive(-fx-accent, 40%);
-}
-
-.check-box, .radio-button {
-    -fx-text-fill: lightgray;
-}
-
-.check-box:hover, .radio-button:hover {
-    -fx-text-fill: white;
-}
-
-.progress-bar .bar {
-    -fx-background-color: linear-gradient(to right, derive(-fx-accent, -20%), -fx-accent);
-    -fx-background-radius: 4px;
-}
-
-.progress-bar .track {
-    -fx-background-color: derive(-fx-base, 20%);
-    -fx-background-radius: 4px;
-}
-
+/* ===== Вкладки (Tabs) ===== */
 .tab-pane {
-    -fx-background-color: derive(-fx-base, 10%);
+    -fx-background-color: #151a30;
 }
 
 .tab {
-    -fx-background-color: derive(-fx-base, 20%);
-    -fx-background-radius: 4px 4px 0 0;
+    -fx-background-color: #1a1f38;
+    -fx-background-radius: 6px 6px 0 0;
+    -fx-text-fill: #a0b4c9;
 }
 
 .tab:hover {
-    -fx-background-color: derive(-fx-base, 30%);
+    -fx-background-color: #252b4a;
+    -fx-text-fill: #e2f3fd;
 }
 
 .tab:selected {
-    -fx-background-color: derive(-fx-base, 10%);
-    -fx-border-color: -fx-accent;
+    -fx-background-color: #0a0e1a;
+    -fx-border-color: #00b4d8;
     -fx-border-width: 0 0 3px 0;
+    -fx-text-fill: #00b4d8;
+}
+
+/* ===== ProgressBar ===== */
+.progress-bar .track {
+    -fx-background-color: #2d3448;
+    -fx-background-radius: 2px;
+}
+
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to right, #00b4d8, #0096c7);
+    -fx-background-radius: 2px;
+}
+
+/* ===== Контекстное меню ===== */
+.context-menu {
+    -fx-background-color: #1e243f;
+    -fx-border-color: #3a4160;
+    -fx-border-width: 1px;
+}
+
+/* ===== Специальные элементы ===== */
+.toggle-switch {
+    -fx-background-color: #252b4a;
+    -fx-background-radius: 12px;
+}
+
+.toggle-switch:selected {
+    -fx-background-color: #00b4d8;
+}
+
+/* ===== Тень для акцентов ===== */
+.accent-shadow {
+    -fx-effect: dropshadow(gaussian, rgba(0, 180, 216, 0.3), 10, 0, 0, 0);
 }
