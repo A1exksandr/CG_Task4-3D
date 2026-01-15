@@ -165,7 +165,6 @@ public class Model {
     public int hashCode() {
         return Objects.hash(vertices, textureVertices, normals, polygons, trianglePolygons, minPoint2f, maxPoint2f);
     }
-
     @Override
     public String toString() {
         return name;
