@@ -3,6 +3,7 @@ package com.cgvsu.model;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
+import com.cgvsu.rasterization.MyColor;
 
 import com.cgvsu.render_engine.GraphicConveyor;
 import com.cgvsu.render_engine.Transform;
@@ -17,6 +18,7 @@ public class ChangedModel extends Model {
     private final SimpleObjectProperty<Vector3f> rotate = new SimpleObjectProperty<>(this, "rotate");
     private final SimpleObjectProperty<Vector3f> scale = new SimpleObjectProperty<>(this, "scale");
     private final SimpleObjectProperty<Vector3f> translate = new SimpleObjectProperty<>(this, "translate");
+    private final SimpleObjectProperty<MyColor> modelColor = new SimpleObjectProperty<>(this, "modelColor", MyColor.RED);
     private boolean isRasterized = false;
     private boolean isZBuffered = false;
     private boolean isLighted = false;
@@ -136,5 +138,17 @@ public class ChangedModel extends Model {
 
     private void changed(ObservableValue<? extends Vector3f> observableValue, Vector3f vector3f, Vector3f t1) {
         transform.set(GraphicConveyor.rotateScaleTranslate(rotate.get(), scale.get(), translate.get()));
+    }
+
+    public MyColor getModelColor() {
+        return modelColor.get();
+    }
+
+    public void setModelColor(MyColor color) {
+        modelColor.set(color);
+    }
+
+    public SimpleObjectProperty<MyColor> modelColorProperty() {
+        return modelColor;
     }
 }

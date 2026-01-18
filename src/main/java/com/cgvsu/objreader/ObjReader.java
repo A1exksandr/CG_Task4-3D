@@ -19,9 +19,9 @@ public class ObjReader {
     private static final String OBJ_COMMENT_TOKEN = "#";
     private static final String OBJ_GROUP_TOKEN = "g";
     private static final String OBJ_EMPTY_TOKEN = "";
+    private static final String OBJ_OBJECT_TOKEN = "o";
 
     public static Model read(final String fileContent, boolean writeInfo) {
-
         Model resultModel = new Model();
         int lineInd = 0;
         Scanner scanner = new Scanner(fileContent);
@@ -33,7 +33,18 @@ public class ObjReader {
             }
             while (true) {
                 ++lineInd;
+
+                // УДАЛЯЕМ КОММЕНТАРИИ НА ЭТОЙ СТРОКЕ
+                int commentIndex = line.indexOf('#');
+                if (commentIndex != -1) {
+                    line = line.substring(0, commentIndex).trim();
+                }
+
                 final List<String> wordsInLine = new ArrayList<>(Arrays.asList(line.split("\\s+")));
+
+                // Убираем пустые строки
+                wordsInLine.removeIf(String::isEmpty);
+
                 if (wordsInLine.isEmpty()) {
                     if (!scanner.hasNextLine()) {
                         break;
@@ -41,7 +52,9 @@ public class ObjReader {
                     line = scanner.nextLine();
                     continue;
                 }
+
                 final String keyWord = wordsInLine.remove(0);
+
                 switch (keyWord) {
                     case OBJ_VERTEX_TOKEN -> resultModel.getVertices().add(parseVertex(wordsInLine, lineInd));
                     case OBJ_TEXTURE_TOKEN -> resultModel.getTextureVertices().add(parseTextureVertex(wordsInLine, lineInd));
@@ -55,8 +68,16 @@ public class ObjReader {
                     }
                     case OBJ_EMPTY_TOKEN -> {
                     }
+                    case OBJ_OBJECT_TOKEN -> {
+                        if (!wordsInLine.isEmpty()) {
+                            resultModel.setName(wordsInLine.get(0)); // сохраняем имя объекта
+                        }
+                        if (writeInfo) System.out.println("Object: " + line);
+                    }
                     default -> throw new ObjReaderExceptions.ObjReaderException("Wrong key word.", lineInd);
+
                 }
+
                 if (!scanner.hasNextLine()) {
                     break;
                 }
@@ -68,14 +89,28 @@ public class ObjReader {
     }
 
     // Всем методам кроме основного я поставил модификатор доступа protected, чтобы обращаться к ним в тестах
-    protected static Vector3f parseVertex(final List<String> listOfWordsWithoutToken, final int lineInd) {
-        if (listOfWordsWithoutToken.size() != 3)
-            throw new ObjReaderExceptions.ObjReaderException("Wrong number of vertex arguments.", lineInd);
+    protected static javax.vecmath.Vector3f parseVertex(final List<String> listOfWordsWithoutToken, final int lineInd) {
+        List<String> cleanList = new ArrayList<>();
+        for (String word : listOfWordsWithoutToken) {
+            if (word.startsWith("#")) {
+                break;
+            }
+            if (!word.isEmpty()) {
+                cleanList.add(word);
+            }
+        }
+
+        if (cleanList.size() != 3) {
+            throw new ObjReaderExceptions.ObjReaderException(
+                    "Wrong number of vertex arguments. Expected 3, got " + cleanList.size(),
+                    lineInd);
+        }
+
         try {
-            return new Vector3f(
-                    Float.parseFloat(listOfWordsWithoutToken.get(0)),
-                    Float.parseFloat(listOfWordsWithoutToken.get(1)),
-                    Float.parseFloat(listOfWordsWithoutToken.get(2)));
+            return new javax.vecmath.Vector3f(
+                    Float.parseFloat(cleanList.get(0)),
+                    Float.parseFloat(cleanList.get(1)),
+                    Float.parseFloat(cleanList.get(2)));
         } catch (NumberFormatException e) {
             throw new ObjReaderExceptions.ObjReaderException("Failed to parse float value.", lineInd);
         }

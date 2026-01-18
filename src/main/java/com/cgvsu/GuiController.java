@@ -216,55 +216,91 @@ public class GuiController {
         String fileContent = "";
         try {
             fileContent = Files.readString(fileName);
-
         } catch (IOException exception) {
             new DialogException("Error with reading model!");
+            return;
         }
-        if (scene.loadedMeshes.size() >= 1) {
-            numberMesh++;
-            addCamera();
+
+        Model model;
+        try {
+            model = ObjReader.read(fileContent, writeToConsole);
+        } catch (Exception e) {
+            new DialogException("Error parsing OBJ file: " + e.getMessage());
+            return;
         }
-        Model model = ObjReader.read(fileContent, writeToConsole);
+
         model.setName(file.getName());
         ChangedModel changedModel = new ChangedModel(model);
 
+        // Добавляем слушатель для преобразований
         changedModel.transformProperty().addListener((observableValue, matrix4f, t1) -> {
             double width = canvas.getWidth();
             double height = canvas.getHeight();
-            Border b  = currentUIModel.get().getBorder();
-            ChangedModel model1 = currentUIModel.get().getModel();
-            Point2f maxP;
-            Point2f minP /*= model1.getMinPoint2f()*/;
 
-//            canvas.getGraphicsContext2D().clearRect(minP.x, minP.y, b.getWidth(), b.getHeight());
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
 
-            try {
-                RenderEngine.render(canvas.getGraphicsContext2D(), scene.getCamera().get(numberCamera), currentUIModel.get().getModel(), (int) width, (int) height);
-            } catch (IOException e) {
-                new DialogException("Error with rendering!");
+            for (int i = 0; i < scene.loadedMeshes.size(); i++) {
+                try {
+                    RenderEngine.render(
+                            canvas.getGraphicsContext2D(),
+                            scene.getCamera().get(numberCamera),
+                            scene.loadedMeshes.get(i),
+                            (int) width,
+                            (int) height
+                    );
+                } catch (IOException e) {
+                    new DialogException("Error with rendering!");
+                }
+
+                if (uiModels.size() > i) {
+                    UIModel uiModel = uiModels.get(i);
+                    Model currentModel = scene.loadedMeshes.get(i);
+                    uiModel.setSize(currentModel.getMinPoint2f(), currentModel.getMaxPoint2f());
+                }
             }
-            UIModel a = currentUIModel.get();
-            model1 = a.getModel();
-            minP = model1.getMinPoint2f();
-            maxP = model1.getMaxPoint2f();
-            a.setSize(minP, maxP);
         });
 
-        scene.loadedMeshes.add(changedModel);
-        UIModel a = new UIModel(changedModel);
-        uiModels.add(a);
+        // Добавляем камеру только для первой модели
+        if (scene.loadedMeshes.isEmpty()) {
+            addCamera();
+        }
 
-        currentUIModel.set(a);
+        // Добавляем модель в сцену
+        scene.loadedMeshes.add(changedModel);
         changedModel.initialize();
 
-        ArrayList<Polygon> triangles = Triangle.triangulatePolygon(scene.loadedMeshes.get(numberMesh).getPolygons());
-        scene.loadedMeshes.get(numberMesh).setPolygons(triangles);
-        listView.getItems().add(a);
+        // Триангуляция
+        ArrayList<Polygon> triangles = Triangle.triangulatePolygon(changedModel.getPolygons());
+        changedModel.setPolygons(triangles);
+
+        // Создаем UI модель
+        UIModel uiModel = new UIModel(changedModel);
+        uiModels.add(uiModel);
+
+        // Устанавливаем текущую модель
+        currentUIModel.set(uiModel);
+
+        // Добавляем в ListView
+        listView.getItems().add(uiModel);
         listView.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> {
             currentUIModel.set(t1);
         });
 
+        // Инициализируем рендеринг
+        try {
+            double width = canvas.getWidth();
+            double height = canvas.getHeight();
+            RenderEngine.render(
+                    canvas.getGraphicsContext2D(),
+                    scene.getCamera().get(numberCamera),
+                    changedModel,
+                    (int) width,
+                    (int) height
+            );
+            uiModel.setSize(changedModel.getMinPoint2f(), changedModel.getMaxPoint2f());
+        } catch (IOException e) {
+            new DialogException("Error with rendering!");
+        }
     }
 
     @FXML

@@ -103,7 +103,8 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <!-- Исправленный слайдер для Rotate X -->
+                                    <Slider min="0" max="360" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="X" BorderPane.alignment="CENTER" />
@@ -114,7 +115,8 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <!-- Исправленный слайдер для Rotate Y -->
+                                    <Slider min="0" max="360" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="Y" BorderPane.alignment="CENTER" />
@@ -125,7 +127,8 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <!-- Исправленный слайдер для Rotate Z -->
+                                    <Slider min="0" max="360" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="Z" BorderPane.alignment="CENTER" />
@@ -187,7 +190,7 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider min="-100.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <Slider min="-360.0" max="360.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="X" BorderPane.alignment="CENTER" />
@@ -198,7 +201,7 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider min="-100.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <Slider min="-360.0" max="360.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="Y" BorderPane.alignment="CENTER" />
@@ -209,7 +212,7 @@
                                     <TextField prefHeight="5.0" prefWidth="119.0" text="0" BorderPane.alignment="CENTER" />
                                 </center>
                                 <bottom>
-                                    <Slider min="-100.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                                    <Slider min="-360.0" max="360.0" prefHeight="37.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
                                 </bottom>
                                 <left>
                                     <Label text="Z" BorderPane.alignment="CENTER" />
